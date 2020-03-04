@@ -2,11 +2,15 @@
 <!-- 最外层的大容器 -->
 <el-container>
   <!-- 左边侧边栏容器 -->
-  <el-aside>1</el-aside>
+  <el-aside style="width:230px">
+    <layout-aside></layout-aside>
+  </el-aside>
   <!-- 右边主要区域容器 -->
  <el-container>
    <!-- 右侧上部容器 -->
-   <el-header>2</el-header>
+   <el-header>
+     <layout-header></layout-header>
+   </el-header>
    <!-- 右侧下部容器 -->
    <el-main>
      <h1>主要区域</h1>
@@ -18,7 +22,12 @@
 </template>
 
 <script>
-export default {}
+
+export default {
+  components: {
+
+  }
+}
 </script>
 
 <style>

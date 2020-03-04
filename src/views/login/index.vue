@@ -67,7 +67,7 @@ export default {
           // 成功执行callback 失败执行 callback(new Error('错误信息'))
           // 我们认为 如果 value 为true 就表示 校验成功 如果value 为false就表示校验失败
             // new Error(错误信息) 就是我们提示的错误信息
-            value ? callback() : callback(new Error('您必须同意我们的霸王条款'))
+            value ? callback() : callback(new Error('您必须同意服务条款'))
           }
         }] // 是否勾选协议的验证规则
 
