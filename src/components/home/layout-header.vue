@@ -60,18 +60,12 @@ export default {
   },
 
   created () {
-    // 获取本地存储的用户token
-    const token = localStorage.getItem('user-token')
-    // 获取个人信息
+    //   获取用户的个人信息
     this.$axios({
-      url: '/user/profile', // 获取个人信息的地址
-      headers: {
-        // 请求头参数
-        Authorization: `Bearer ${token}` // 格式要求 Bearar空格+token
-      }
-    }).then(res => {
-      // 请求成功后
-      this.userInfo = res.data.data
+      url: '/user/profile'// 请求地址
+    }).then(result => {
+      // 如果加载成功了 我们要将数据赋值给 userInfo
+      this.userInfo = result.data
     })
   }
 }

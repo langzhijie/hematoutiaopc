@@ -97,10 +97,9 @@ export default {
           data: this.loginForm, // body的请求参数 常用于post/put/
           method: 'POST' // 请求类型 默认值是get类型 大小写都可以
         }).then(result => {
-          // 成功 后将token进行存储
-          console.log(result.data.data.token)
-          // 讲token 进行本地存储
-          window.localStorage.setItem('user-token', result.data.data.token)
+          // 成功 之后打印结果
+          // 把钥匙放在兜里 也就是把token存于 本地缓存
+          window.localStorage.setItem('user-token', result.data.token)
 
           this.$router.push('/home') // 成功后进行跳转 push(可以是字符串也可以是对象)
         }).catch(() => {
