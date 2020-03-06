@@ -19,10 +19,16 @@ const routes = [
       {
         path: '', // 二级路由地址 不写就默认为/home 要是写就会形成拼接 /home/XXX
         component: ChildHome
-      }, {
+      },
+      {
         // 配置评论列表路由
         path: 'comment', // 评论地址
         component: () => import('@/views/comment')/// / 按需加载 组件
+      },
+      {
+        // 素材管理的路由表
+        path: 'material', // 素材管理地址
+        component: () => import('@/views/material') // 按需加载组件
       }
 
     ]
