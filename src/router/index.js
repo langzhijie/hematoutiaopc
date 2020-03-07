@@ -29,6 +29,11 @@ const routes = [
         // 素材管理的路由表
         path: 'material', // 素材管理地址
         component: () => import('@/views/material') // 按需加载组件
+      },
+      {
+        // 文章列表的路由表
+        path: 'articles', // 文章列表地址
+        component: () => import('@/views/articles')
       }
 
     ]

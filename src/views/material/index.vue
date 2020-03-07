@@ -23,22 +23,22 @@
       <el-tab-pane label="全部素材" name="all">
         <!-- 页面结构的搭建 -->
         <div class="img_list">
-          <el-card class="img_card" v-for="item in list" :key="item.id">
+          <el-card class="img_card" v-for="(item,index) in list" :key="item.id">
             <!-- 放置图片 并且赋值 图片地址-->
-            <img :src="item.url" alt />
+            <img :src="item.url" alt  @click="selectImg(index)"/>
             <!-- 操作栏 可以flex布局-->
             <el-row class="operate" type="flex" align="middle" justify="space-around">
-              <i class="el-icon-star-on"></i>
-              <i class="el-icon-delete-solid"></i>
+              <i class="el-icon-star-on" @click="collectOrCancel(item)" :style="{color: item.is_collected ? 'red' : 'black'}"></i>
+              <i class="el-icon-delete-solid" @click="delMaterial(item)" ></i>
             </el-row>
           </el-card>
         </div>
       </el-tab-pane>
       <el-tab-pane label="收藏素材" name="collect">
             <div class="img_list">
-          <el-card class="img_card" v-for="item in list" :key="item.id">
+          <el-card class="img_card" v-for="(item, index) in list" :key="item.id">
             <!-- 放置图片 并且赋值 图片地址-->
-            <img :src="item.url" alt />
+            <img :src="item.url" alt   @click="selectImg(index)"/>
 
           </el-card>
         </div>
@@ -58,6 +58,16 @@
              @current-change="ChangePage"
           ></el-pagination>
     </el-row>
+    <!-- 放置一个公共的el-dialog visible属性，它接收Boolean，当为true时显示 Dialog -->
+    <!-- 通过监听close事件关闭弹窗 -->
+   <el-dialog @opened="openEnd" :visible="dialogVisible" @close="dialogVisible = false">
+     <!-- 添加走马灯组件 -->
+      <el-carousel ref="myCarousel" indicator-position="outside" height="400px" >
+         <el-carousel-item v-for="item in list" :key="item.id">
+           <img style="width:100%;height:100%" :src="item.url" alt="">
+         </el-carousel-item>
+      </el-carousel>
+   </el-dialog>
   </el-card>
 </template>
 
@@ -72,10 +82,53 @@ export default {
         currentPage: 1, // 当前在第几页
         pageSize: 15// 每页显示几条数据
 
-      }
+      },
+      dialogVisible: false, // 控制显示隐藏
+      clickIndex: -1 // 点击的索引
     }
   },
   methods: {
+    // 打开图片调用的方法
+    openEnd () {
+      // 打开对应的照片
+      this.$refs.myCarousel.setActiveItem(this.clickIndex) // 尝试通过这种方式设置index
+    },
+    // 记录点击图片的下标
+    selectImg (index) {
+      this.clickIndex = index // 记录下选择的下标
+      this.dialogVisible = true // 让弹窗显示出来
+    },
+
+    // 删除图片
+    delMaterial (row) {
+      // 删除前进行询问
+      this.$confirm('您确定要删除该内容吗？').then(() => {
+        // 询问之后调用删除的接口
+        this.$axios({
+          url: `/user/images/${row.id}`, // 删除请求地址
+          method: 'DELETE' // delete类型
+
+        }).then(() => {
+          this.getMsg() // 成功后从新拉取数据
+        })
+      })
+    },
+    // 收藏图片
+    collectOrCancel (row) {
+      this.$axios({
+        url: `/user/images/${row.id}`, // 添加收藏请求地址
+        method: 'PUT', // put类型
+        data: {
+          collect: !row.is_collected // data参数 collect 取反表示
+        }
+      }).then(() => {
+        // 成功
+        this.getMsg() // 成功就从新拉取数据
+      }).catch(() => {
+        // 失败
+        this.$message.error('操作失败')
+      })
+    },
     //   上传图片
     uploadImg (params) {
       const data = new FormData() // 实例化一个fordata对象
