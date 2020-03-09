@@ -34,6 +34,12 @@ const routes = [
         // 文章列表的路由表
         path: 'articles', // 文章列表地址
         component: () => import('@/views/articles')
+      },
+      {
+        // 发布文章的路由表
+        path: 'publish', // 发布文章地址
+        component: () => import('@/views/publish')
+
       }
 
     ]
